@@ -1,0 +1,574 @@
+basePath: /api/tag
+consumes:
+- application/json
+definitions:
+  ApplicationError:
+    description: ApplicationError is a generic structure that represents an error
+      response.
+    properties:
+      error:
+        $ref: '#/definitions/Error'
+    type: object
+  DeleteTag:
+    properties:
+      forceDelete:
+        description: ForceDelete is used to delete used tags aswell when set to true.
+          Default is false.
+        example: false
+        type: boolean
+      id:
+        description: Id is the UUID of the tag to be deleted.
+        example: d0fb502e-5ed3-4c7b-8e1c-54cd813378e6
+        type: string
+    type: object
+  Error:
+    properties:
+      message:
+        type: string
+    type: object
+  FindObjectsByTagsInput:
+    properties:
+      objectType:
+        description: ObjectType is the type of object that is mapped with tags.
+        example: ManifestItem
+        type: string
+      operator:
+        description: Operator is used to identify either union or intersection
+        enum:
+        - OR
+        - AND
+        type: string
+      tagIDs:
+        description: TagIds is a list of tag UUIDs
+        example:
+        - 899a3e73-3ddb-46c6-8fae-ed6f566
+        - ' 7ce9de6f-e421-4788-b361-d40b86cb6f24'
+        items:
+          type: string
+        type: array
+    type: object
+  GetTags:
+    properties:
+      pageFilterSort:
+        allOf:
+        - $ref: '#/definitions/commons.PageFilterSort'
+        description: optional parameter for sorting/paging/filtering, if empty, we
+          return all the records
+    type: object
+  GetTagsByIDs:
+    properties:
+      ids:
+        description: IDs are the tag UUIDs.
+        example:
+        - ff81c7b4-b4d5-4708-aa99-cbcefb37cb0d
+        - ' 022aa9e2-c7cb-4a03-9fa2-6ef034f4a2b2'
+        items:
+          type: string
+        type: array
+    type: object
+  GetTagsByName:
+    properties:
+      name:
+        description: Name is tag name.
+        example: SAS Programs
+        type: string
+    type: object
+  Tag:
+    properties:
+      color:
+        description: Color is tag color.
+        example: '#126'
+        type: string
+      description:
+        description: Description is tag description. [optional value ? empty string]
+        example: This is SAS Programs tag
+        type: string
+      id:
+        description: ID is UUID of the tag to update, it's empty when adding a new
+          tag. [optional value ? empty string]
+        example: 26d661b4-306c-43c5-a57b-db8c1e813f72
+        type: string
+      name:
+        description: Name is tag name.
+        example: SAS Programs
+        type: string
+    type: object
+  TagsToObject:
+    properties:
+      objectId:
+        description: ObjectID is the UUID of the object that needs to be mapped with
+          tags.
+        example: 1854ea07-01e5-42e4-b3c6-f1a5f7f150e9
+        type: string
+      objectType:
+        description: ObjectType is the type of object that is mapped with tags.
+        example: ManifestItem
+        type: string
+      tagIDs:
+        description: TagIDs is a list of tag UUIDs
+        example:
+        - 899a3e73-3ddb-46c6-8fae-ed6f566
+        - ' 7ce9de6f-e421-4788-b361-d40b86cb6f24'
+        items:
+          type: string
+        type: array
+    type: object
+  commons.Filter:
+    properties:
+      filterBy:
+        description: FilterBy Name of the property which need to be filtered
+        example: name
+        type: string
+      filterPattern:
+        description: FilterPattern Search for this pattern in the column specified
+          by filterBy. Regular expressions are not allowed
+        example: project
+        type: string
+    type: object
+  commons.ItemsResponse:
+    properties:
+      hasNext:
+        type: boolean
+      hasPrevious:
+        type: boolean
+      items: {}
+      pageSize:
+        type: integer
+      totalItems:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  commons.PageFilterSort:
+    properties:
+      filter:
+        $ref: '#/definitions/commons.Filter'
+      paging:
+        $ref: '#/definitions/commons.Paging'
+      sort:
+        $ref: '#/definitions/commons.Sort'
+    type: object
+  commons.Paging:
+    properties:
+      page:
+        description: Page Page Number
+        example: 1
+        type: integer
+      size:
+        description: Size Number of items to return in the response
+        example: 10
+        type: integer
+    type: object
+  commons.Sort:
+    properties:
+      sortBy:
+        description: SortBy Name of the property which need to be sorted
+        example: name
+        type: string
+      sortDir:
+        description: 'SortDir The direction of the sorting: ASC or DESC. Default =
+          DESC'
+        enum:
+        - ASC
+        - DESC
+        type: string
+    type: object
+  gitlab_d-wise_com_Aspire_tag_core_model.Resource:
+    properties:
+      id:
+        description: ID is the UUID of any resource
+        example: 1854ea07-01e5-42e4-b3c6-f1a5f7f150e9
+        type: string
+    type: object
+host: gate.apdev.d-wise.com
+info:
+  contact: {}
+  description: This API will handle all the operations related to user tag.
+  title: Tag API
+  version: 1.3.0
+paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      description: Tells if the chi-swagger APIs are working or not.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: api response
+          schema:
+            type: string
+      summary: This API can be used as health check for this application.
+      tags:
+      - chi-swagger
+  /ping:
+    get:
+      consumes:
+      - application/json
+      description: Tells if the chi-swagger APIs are working or not.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: api response
+          schema:
+            type: string
+      summary: This API can be used as health check for this application.
+      tags:
+      - chi-swagger
+  /v1/addTagsToObject:
+    post:
+      consumes:
+      - application/json
+      description: This API create new object and adds tags to the object.
+      parameters:
+      - description: payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/TagsToObject'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/TagsToObject'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ApplicationError'
+      summary: add tags to object
+      tags:
+      - tags
+  /v1/deleteTag:
+    post:
+      consumes:
+      - application/json
+      description: This API deletes an unused tag if force_delete is False. If force_delete
+        is True then it deletes used tag as well.
+      parameters:
+      - description: payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/DeleteTag'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/DeleteTag'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ApplicationError'
+      summary: delete an unused tag
+      tags:
+      - tags
+  /v1/findObjectItemsByTags:
+    post:
+      consumes:
+      - application/json
+      description: This API returns objects by tags, object_type and operator -> AND
+        for intersection, OR of union
+      parameters:
+      - description: payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/FindObjectsByTagsInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/TagsToObject'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ApplicationError'
+      summary: returns objects by tags, object_type and operator -> AND for intersection,
+        OR of union
+      tags:
+      - tags
+  /v1/getTag:
+    post:
+      consumes:
+      - application/json
+      description: Returns tag specification by id.
+      parameters:
+      - description: Tag id
+        in: body
+        name: id
+        required: true
+        schema:
+          $ref: '#/definitions/gitlab_d-wise_com_Aspire_tag_core_model.Resource'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Tag'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ApplicationError'
+      summary: get tag
+      tags:
+      - tags
+  /v1/getTags:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        list all available tags
+        * Can be sorted by: name, description, color
+        * Can be filtered by: name
+      parameters:
+      - description: A wrapper for the paging, sorting and filtering object.
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/GetTags'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/commons.ItemsResponse'
+            - properties:
+                items:
+                  items:
+                    $ref: '#/definitions/Tag'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ApplicationError'
+      summary: list tags
+      tags:
+      - tags
+  /v1/getTagsByIDs:
+    post:
+      consumes:
+      - application/json
+      description: Returns array of tags specification by given ids.
+      parameters:
+      - description: payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/GetTagsByIDs'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/Tag'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ApplicationError'
+      summary: get tags by ids
+      tags:
+      - tags
+  /v1/getTagsByPartialName:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        list all available tags by name
+        * Can be filtered by: name
+      parameters:
+      - description: payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/GetTagsByName'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/Tag'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ApplicationError'
+      summary: list tags by name
+      tags:
+      - tags
+  /v1/removeTagsFromObject:
+    post:
+      consumes:
+      - application/json
+      description: This API removes the tags from an existing object.
+      parameters:
+      - description: payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/TagsToObject'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/TagsToObject'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ApplicationError'
+      summary: remove tags from object
+      tags:
+      - tags
+  /v1/saveTag:
+    post:
+      consumes:
+      - application/json
+      description: This API adds a new tag if id field is empty. If it's not empty,
+        it tries to update tag with that id.
+      parameters:
+      - description: payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/Tag'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Tag'
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/Tag'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ApplicationError'
+      summary: add or update a tag
+      tags:
+      - tags
+  /v1/updateTagsToObject:
+    post:
+      consumes:
+      - application/json
+      description: This API updates the tags for an existing object.
+      parameters:
+      - description: payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/TagsToObject'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/TagsToObject'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ApplicationError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ApplicationError'
+      summary: updates tags to object
+      tags:
+      - tags
+produces:
+- application/json
+schemes:
+- https
+swagger: "2.0"

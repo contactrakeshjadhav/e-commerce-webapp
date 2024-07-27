@@ -1,0 +1,1 @@
+DROP table object_has_tags;

@@ -1,0 +1,1 @@
+ALTER TABLE tags ADD constraint unique_column UNIQUE (name);

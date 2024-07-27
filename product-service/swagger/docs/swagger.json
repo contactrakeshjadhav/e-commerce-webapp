@@ -1,0 +1,840 @@
+{
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "schemes": [
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This API will handle all the operations related to user tag.",
+        "title": "Tag API",
+        "contact": {},
+        "version": "1.3.0"
+    },
+    "host": "gate.apdev.d-wise.com",
+    "basePath": "/api/tag",
+    "paths": {
+        "/": {
+            "get": {
+                "description": "Tells if the chi-swagger APIs are working or not.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chi-swagger"
+                ],
+                "summary": "This API can be used as health check for this application.",
+                "responses": {
+                    "200": {
+                        "description": "api response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/ping": {
+            "get": {
+                "description": "Tells if the chi-swagger APIs are working or not.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chi-swagger"
+                ],
+                "summary": "This API can be used as health check for this application.",
+                "responses": {
+                    "200": {
+                        "description": "api response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/addTagsToObject": {
+            "post": {
+                "description": "This API create new object and adds tags to the object.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tags"
+                ],
+                "summary": "add tags to object",
+                "parameters": [
+                    {
+                        "description": "payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/TagsToObject"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/TagsToObject"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/deleteTag": {
+            "post": {
+                "description": "This API deletes an unused tag if force_delete is False. If force_delete is True then it deletes used tag as well.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tags"
+                ],
+                "summary": "delete an unused tag",
+                "parameters": [
+                    {
+                        "description": "payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/DeleteTag"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/DeleteTag"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/findObjectItemsByTags": {
+            "post": {
+                "description": "This API returns objects by tags, object_type and operator -\u003e AND for intersection, OR of union",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tags"
+                ],
+                "summary": "returns objects by tags, object_type and operator -\u003e AND for intersection, OR of union",
+                "parameters": [
+                    {
+                        "description": "payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/FindObjectsByTagsInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/TagsToObject"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/getTag": {
+            "post": {
+                "description": "Returns tag specification by id.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tags"
+                ],
+                "summary": "get tag",
+                "parameters": [
+                    {
+                        "description": "Tag id",
+                        "name": "id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/gitlab_d-wise_com_Aspire_tag_core_model.Resource"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Tag"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/getTags": {
+            "post": {
+                "description": "list all available tags\n* Can be sorted by: name, description, color\n* Can be filtered by: name",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tags"
+                ],
+                "summary": "list tags",
+                "parameters": [
+                    {
+                        "description": "A wrapper for the paging, sorting and filtering object.",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/GetTags"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/commons.ItemsResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/Tag"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/getTagsByIDs": {
+            "post": {
+                "description": "Returns array of tags specification by given ids.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tags"
+                ],
+                "summary": "get tags by ids",
+                "parameters": [
+                    {
+                        "description": "payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/GetTagsByIDs"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Tag"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/getTagsByPartialName": {
+            "post": {
+                "description": "list all available tags by name\n* Can be filtered by: name",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tags"
+                ],
+                "summary": "list tags by name",
+                "parameters": [
+                    {
+                        "description": "payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/GetTagsByName"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Tag"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/removeTagsFromObject": {
+            "post": {
+                "description": "This API removes the tags from an existing object.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tags"
+                ],
+                "summary": "remove tags from object",
+                "parameters": [
+                    {
+                        "description": "payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/TagsToObject"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/TagsToObject"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/saveTag": {
+            "post": {
+                "description": "This API adds a new tag if id field is empty. If it's not empty, it tries to update tag with that id.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tags"
+                ],
+                "summary": "add or update a tag",
+                "parameters": [
+                    {
+                        "description": "payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Tag"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Tag"
+                        }
+                    },
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/Tag"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/updateTagsToObject": {
+            "post": {
+                "description": "This API updates the tags for an existing object.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tags"
+                ],
+                "summary": "updates tags to object",
+                "parameters": [
+                    {
+                        "description": "payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/TagsToObject"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/TagsToObject"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ApplicationError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "ApplicationError": {
+            "description": "ApplicationError is a generic structure that represents an error response.",
+            "type": "object",
+            "properties": {
+                "error": {
+                    "$ref": "#/definitions/Error"
+                }
+            }
+        },
+        "DeleteTag": {
+            "type": "object",
+            "properties": {
+                "forceDelete": {
+                    "description": "ForceDelete is used to delete used tags aswell when set to true. Default is false.",
+                    "type": "boolean",
+                    "example": false
+                },
+                "id": {
+                    "description": "Id is the UUID of the tag to be deleted.",
+                    "type": "string",
+                    "example": "d0fb502e-5ed3-4c7b-8e1c-54cd813378e6"
+                }
+            }
+        },
+        "Error": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "FindObjectsByTagsInput": {
+            "type": "object",
+            "properties": {
+                "objectType": {
+                    "description": "ObjectType is the type of object that is mapped with tags.",
+                    "type": "string",
+                    "example": "ManifestItem"
+                },
+                "operator": {
+                    "description": "Operator is used to identify either union or intersection",
+                    "type": "string",
+                    "enum": [
+                        "OR",
+                        "AND"
+                    ]
+                },
+                "tagIDs": {
+                    "description": "TagIds is a list of tag UUIDs",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "899a3e73-3ddb-46c6-8fae-ed6f566",
+                        " 7ce9de6f-e421-4788-b361-d40b86cb6f24"
+                    ]
+                }
+            }
+        },
+        "GetTags": {
+            "type": "object",
+            "properties": {
+                "pageFilterSort": {
+                    "description": "optional parameter for sorting/paging/filtering, if empty, we return all the records",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/commons.PageFilterSort"
+                        }
+                    ]
+                }
+            }
+        },
+        "GetTagsByIDs": {
+            "type": "object",
+            "properties": {
+                "ids": {
+                    "description": "IDs are the tag UUIDs.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "ff81c7b4-b4d5-4708-aa99-cbcefb37cb0d",
+                        " 022aa9e2-c7cb-4a03-9fa2-6ef034f4a2b2"
+                    ]
+                }
+            }
+        },
+        "GetTagsByName": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Name is tag name.",
+                    "type": "string",
+                    "example": "SAS Programs"
+                }
+            }
+        },
+        "Tag": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "description": "Color is tag color.",
+                    "type": "string",
+                    "example": "#126"
+                },
+                "description": {
+                    "description": "Description is tag description. [optional value ? empty string]",
+                    "type": "string",
+                    "example": "This is SAS Programs tag"
+                },
+                "id": {
+                    "description": "ID is UUID of the tag to update, it's empty when adding a new tag. [optional value ? empty string]",
+                    "type": "string",
+                    "example": "26d661b4-306c-43c5-a57b-db8c1e813f72"
+                },
+                "name": {
+                    "description": "Name is tag name.",
+                    "type": "string",
+                    "example": "SAS Programs"
+                }
+            }
+        },
+        "TagsToObject": {
+            "type": "object",
+            "properties": {
+                "objectId": {
+                    "description": "ObjectID is the UUID of the object that needs to be mapped with tags.",
+                    "type": "string",
+                    "example": "1854ea07-01e5-42e4-b3c6-f1a5f7f150e9"
+                },
+                "objectType": {
+                    "description": "ObjectType is the type of object that is mapped with tags.",
+                    "type": "string",
+                    "example": "ManifestItem"
+                },
+                "tagIDs": {
+                    "description": "TagIDs is a list of tag UUIDs",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "899a3e73-3ddb-46c6-8fae-ed6f566",
+                        " 7ce9de6f-e421-4788-b361-d40b86cb6f24"
+                    ]
+                }
+            }
+        },
+        "commons.Filter": {
+            "type": "object",
+            "properties": {
+                "filterBy": {
+                    "description": "FilterBy Name of the property which need to be filtered",
+                    "type": "string",
+                    "example": "name"
+                },
+                "filterPattern": {
+                    "description": "FilterPattern Search for this pattern in the column specified by filterBy. Regular expressions are not allowed",
+                    "type": "string",
+                    "example": "project"
+                }
+            }
+        },
+        "commons.ItemsResponse": {
+            "type": "object",
+            "properties": {
+                "hasNext": {
+                    "type": "boolean"
+                },
+                "hasPrevious": {
+                    "type": "boolean"
+                },
+                "items": {},
+                "pageSize": {
+                    "type": "integer"
+                },
+                "totalItems": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "commons.PageFilterSort": {
+            "type": "object",
+            "properties": {
+                "filter": {
+                    "$ref": "#/definitions/commons.Filter"
+                },
+                "paging": {
+                    "$ref": "#/definitions/commons.Paging"
+                },
+                "sort": {
+                    "$ref": "#/definitions/commons.Sort"
+                }
+            }
+        },
+        "commons.Paging": {
+            "type": "object",
+            "properties": {
+                "page": {
+                    "description": "Page Page Number",
+                    "type": "integer",
+                    "example": 1
+                },
+                "size": {
+                    "description": "Size Number of items to return in the response",
+                    "type": "integer",
+                    "example": 10
+                }
+            }
+        },
+        "commons.Sort": {
+            "type": "object",
+            "properties": {
+                "sortBy": {
+                    "description": "SortBy Name of the property which need to be sorted",
+                    "type": "string",
+                    "example": "name"
+                },
+                "sortDir": {
+                    "description": "SortDir The direction of the sorting: ASC or DESC. Default = DESC",
+                    "type": "string",
+                    "enum": [
+                        "ASC",
+                        "DESC"
+                    ]
+                }
+            }
+        },
+        "gitlab_d-wise_com_Aspire_tag_core_model.Resource": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "ID is the UUID of any resource",
+                    "type": "string",
+                    "example": "1854ea07-01e5-42e4-b3c6-f1a5f7f150e9"
+                }
+            }
+        }
+    }
+}
